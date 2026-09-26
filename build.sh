@@ -1,0 +1,1 @@
+vivado -mode batch -source run_sim.tcl -notrace -log /dev/null -journal /dev/null
