@@ -1,15 +1,25 @@
+
+function automatic void count_calls();
+  
+  int a = 0;
+  
+  static int b = 0;
+
+  a++;
+  b++;
+
+  $display("%d %d",a,b);
+
+endfunction
+
 module tb;
   
   initial begin
     
-    int ascend[0:4];
-    int descend[4:0];
 
-    ascend[0:2] = {10,20,30};
-    descend[2:0] = {30,20,10};
+    count_calls();
 
-    $display("%p", ascend);
-    $display("%p", descend);
+    count_calls();
 
   end
 
