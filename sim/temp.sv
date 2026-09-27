@@ -1,25 +1,28 @@
 
-function automatic void count_calls();
-  
-  int a = 0;
-  
-  static int b = 0;
-
-  a++;
-  b++;
-
-  $display("%d %d",a,b);
-
-endfunction
-
 module tb;
-  
+
   initial begin
     
+    bit [31:0] src[0:5];
+    bit [0:31] dst[0:5];
 
-    count_calls();
+    for (
+      int i = 0; 
+      i < $size(src);
+      ++i
+    ) 
+    begin
+      
+      src[i] = i;
+      dst[i] = i;
 
-    count_calls();
+    end
+
+    $display("%b", src[1]);
+    $display("%b", dst[1]);
+
+    $display("%b", src[1][0]);
+    $display("%b", dst[1][0]);
 
   end
 
