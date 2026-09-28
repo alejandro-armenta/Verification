@@ -1,52 +1,73 @@
 
 module tb;
 
-  int j = 1;
-  int k = 0;
+  int file;
+  int i;
+  string s;
 
-  int q2[$] = {3,4};
-  int q[$] = '{0,2,5};
+  int temp;
+
+  int switch[string];
+
+  int min_address,max_address;
+
+  initial 
+  begin
+
+    file = $fopen("../switch.txt", "r");
+    
+    if (file == 0)
+    
+    begin 
+      $display("could not open file");
+      $finish;
+    end 
+    
+    else
+    
+    begin
+      $display("success open file");
+    end
 
 
-  initial begin
+    while (!$feof(file))
+    
+    begin 
+      
+      temp = $fscanf(file, "%d %s", i, s );
 
-    q = {q[0],1,q[1:$]};
-    
-    $display(q);
+      if (temp == 2)
+      begin 
+        
+        switch[s] = i;
+      
+      end
 
-    q = {q[0:2], q2, q[3:$]};
+    end
 
-    $display(q);
-    
-    // psuh fornt
-    q = {6,q};
-    
-    $display(q);
-    
-    k = q[$];
-    
-    $display(k);
-    
-    q = q[0:$-1];
 
-    $display(q);
+    $fclose(file);
     
-    q = {q, 8};
-    
-    $display(q);
 
-    k = q[0];
-    
-    $display(k);
-    
-    q = q[1:$];
+    // foreach(switch[i])
+    //   $display(i, switch[i]);
 
-    $display(q);
+
+    min_address = switch["min_address"];
     
-    q = {};
+    if (switch.exists("max_address"))
+      max_address = switch["max_address"];
+      
+    else
+      max_address = 1000;
+
+
+    $display(min_address,max_address);
+
+
     
-    $display(q);
 
   end
+
 
 endmodule

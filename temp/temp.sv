@@ -207,3 +207,72 @@
     $display(q);
 
     q.delete();
+
+    q = {q[0],1,q[1:$]};
+    
+    $display(q);
+
+    q = {q[0:2], q2, q[3:$]};
+
+    $display(q);
+    
+    // psuh fornt
+    q = {6,q};
+    
+    $display(q);
+    
+    k = q[$];
+    
+    $display(k);
+    
+    q = q[0:$-1];
+
+    $display(q);
+    
+    q = {q, 8};
+    
+    $display(q);
+
+    k = q[0];
+    
+    $display(k);
+    
+    q = q[1:$];
+
+    $display(q);
+    
+    q = {};
+    
+    $display(q);
+do begin 
+      
+      ale[idx] = idx;
+      
+      idx = idx << 1;
+        
+    end while (idx != 0);
+    
+    // key value paris
+    // hash map ordenado
+    foreach (ale[i])
+      $display(i, ale[i]);
+
+    // get key of first element if exist if not return 0
+    if(ale.first(idx))
+      // esta es la llave!
+      do 
+      
+      begin 
+      
+        $display(idx, ale[idx]); 
+      
+      end
+
+      while(ale.next(idx));
+      
+    
+    ale.first(idx);
+
+    ale.delete(idx);
+
+    $display(ale);
