@@ -1,28 +1,51 @@
 
 module tb;
 
+  int j = 1;
+  int k = 0;
+
+  int q2[$] = {3,4};
+  int q[$] = '{0,2,5};
+
+
   initial begin
+
+    q = {q[0],1,q[1:$]};
     
-    bit [31:0] src[0:5];
-    bit [0:31] dst[0:5];
+    $display(q);
 
-    for (
-      int i = 0; 
-      i < $size(src);
-      ++i
-    ) 
-    begin
-      
-      src[i] = i;
-      dst[i] = i;
+    q = {q[0:2], q2, q[3:$]};
 
-    end
+    $display(q);
+    
+    // psuh fornt
+    q = {6,q};
+    
+    $display(q);
+    
+    k = q[$];
+    
+    $display(k);
+    
+    q = q[0:$-1];
 
-    $display("%b", src[1]);
-    $display("%b", dst[1]);
+    $display(q);
+    
+    q = {q, 8};
+    
+    $display(q);
 
-    $display("%b", src[1][0]);
-    $display("%b", dst[1][0]);
+    k = q[0];
+    
+    $display(k);
+    
+    q = q[1:$];
+
+    $display(q);
+    
+    q = {};
+    
+    $display(q);
 
   end
 
