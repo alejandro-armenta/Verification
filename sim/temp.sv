@@ -1,73 +1,28 @@
 
 module tb;
 
-  int file;
-  int i;
-  string s;
+  int f[6] = {1, 6, 2, 6, 8, 6};
 
-  int temp;
+  int d[] = {2, 4, 6, 8, 10};
 
-  int switch[string];
+  int q[$] = {1, 6, 2, 6, 8, 6};
 
-  int min_address,max_address;
+  int q2[$];
+  int q3[$];
+  int q4[$];
 
-  initial 
-  begin
+  initial begin
 
-    file = $fopen("../switch.txt", "r");
-    
-    if (file == 0)
-    
-    begin 
-      $display("could not open file");
-      $finish;
-    end 
-    
-    else
-    
-    begin
-      $display("success open file");
-    end
+    q2 = q.min();
+    q3 = q.max();
+    q4 = q.unique();
+
+    $display(q2);
+    $display(q3);
+    $display(q4);
 
 
-    while (!$feof(file))
-    
-    begin 
-      
-      temp = $fscanf(file, "%d %s", i, s );
-
-      if (temp == 2)
-      begin 
-        
-        switch[s] = i;
-      
-      end
-
-    end
-
-
-    $fclose(file);
-    
-
-    // foreach(switch[i])
-    //   $display(i, switch[i]);
-
-
-    min_address = switch["min_address"];
-    
-    if (switch.exists("max_address"))
-      max_address = switch["max_address"];
-      
-    else
-      max_address = 1000;
-
-
-    $display(min_address,max_address);
-
-
-    
 
   end
-
 
 endmodule

@@ -1,14 +1,11 @@
 set_param messaging.defaultLimit 0  
 
-# set dynamic_seed [expr {int(rand() * 1000000)}]
-
-set dynamic_seed 54321
-
+# 1. Generate a random seed value using Tcl's system clock/integer math
+set dynamic_seed [expr {int(rand() * 1000000)}]
 puts "Selected random simulation seed: $dynamic_seed"
 
 # 2. Assign the dynamic seed to the file-set property (for GUI/Vivado runs)
 set_property -name {xsim.simulate.xsim.more_options} -value "-sv_seed $dynamic_seed" -objects [get_filesets sim_1]
-
 
 set TESTBENCH_TOP "sim_lib.tb" 
 
@@ -79,5 +76,6 @@ if {$local_fail} { error "ERROR: xelab finished with errors or strict warnings."
 
 
 puts "Launching Vivado Simulator..."
+# 3. CRITICAL: Inject the dynamic seed switch into your standalone xsim command
 set ale [exec xsim $SNAPSHOT_NAME -sv_seed $dynamic_seed --runall -testplusarg UVM_TESTNAME=$UVM_TEST]
 puts $ale

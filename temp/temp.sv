@@ -276,3 +276,68 @@ do begin
     ale.delete(idx);
 
     $display(ale);
+
+
+    file = $fopen("../switch.txt", "r");
+    
+    if (file == 0)
+    
+    begin 
+      $display("could not open file");
+      $finish;
+    end 
+    
+    else
+    
+    begin
+      $display("success open file");
+    end
+
+
+    while (!$feof(file))
+    
+    begin 
+      
+      temp = $fscanf(file, "%d %s", i, s );
+
+      if (temp == 2)
+      begin 
+        
+        switch[s] = i;
+      
+      end
+
+    end
+
+
+    $fclose(file);
+    
+
+    // foreach(switch[i])
+    //   $display(i, switch[i]);
+
+
+    min_address = switch["min_address"];
+    
+    if (switch.exists("max_address"))
+      max_address = switch["max_address"];
+      
+    else
+      max_address = 1000;
+
+
+    $display(min_address,max_address);
+
+    
+element = $urandom() % (aa.size() - 1);
+
+    $display(aa.size() - 1, element);
+
+    foreach (aa[i]) begin
+      if (count++ == element) begin
+        idx = i;
+        break;
+      end
+    end
+
+    $display(idx, aa[idx]);
