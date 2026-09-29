@@ -341,3 +341,57 @@ element = $urandom() % (aa.size() - 1);
     end
 
     $display(idx, aa[idx]);
+tq = d.find with (item > 3);
+
+    $display(tq);
+
+    // son submodulues de arriba
+    tq = d.find_index with (item > 3);
+
+    $display(tq);
+
+    tq = d.find_first with (item > 3);
+
+    $display(tq);
+
+    tq = d.find_first_index with (item > 3);
+
+    $display(tq);
+
+    tq = d.find_last with (item > 3);
+
+    $display(tq);
+
+    tq = d.find_last_index with (item > 3);
+
+    $display(tq);
+
+    d.reverse();
+
+    $display(d);
+
+    d.sort();
+
+    $display(d);
+
+    d.rsort();
+
+    $display(d);
+
+    d.shuffle();
+
+    $display(d);
+
+  // my_struct_s a = {
+  //   32'haaaa_aaaa,
+  //   8'hbb,
+  //   16'hcccc,
+  //   32'hdddd_dddd
+  // };
+
+  // num_u un;
+
+      // un.i = -1;
+
+    // $display($signed(un.i));
+    // $display(un.b);

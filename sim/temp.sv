@@ -1,27 +1,33 @@
 
 module tb;
 
-  int f[6] = {1, 6, 2, 6, 8, 6};
+  typedef struct {
+    int      a;
+    byte     b;
+    shortint c;
+    int      d;
+  } my_struct_s;
 
-  int d[] = {2, 4, 6, 8, 10};
+  typedef struct packed {
+    bit [7:0] r, g, b;
+  } pixel_p_s;
 
-  int q[$] = {1, 6, 2, 6, 8, 6};
+  typedef union {
+    // unsigned integer
+    bit [31:0] b;
+    // signed integer
+    int        i;
+  } num_u;
 
-  int q2[$];
-  int q3[$];
-  int q4[$];
+  pixel_p_s a;
 
   initial begin
 
-    q2 = q.min();
-    q3 = q.max();
-    q4 = q.unique();
+    a.r = 32'hAA;
+    a.g = 32'hBB;
+    a.b = 32'hCC;
 
-    $display(q2);
-    $display(q3);
-    $display(q4);
-
-
+    $displayh(a);
 
   end
 

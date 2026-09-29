@@ -1,0 +1,6 @@
+--struct_union_members_alignment=align
+--failsafe_success
+
+--column_limit=40
+--line_break_penalty=1
+--over_column_limit_penalty=5000
