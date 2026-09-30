@@ -9,7 +9,6 @@ puts "Selected random simulation seed: $dynamic_seed"
 # 2. Assign the dynamic seed to the file-set property (for GUI/Vivado runs)
 set_property -name {xsim.simulate.xsim.more_options} -value "-sv_seed $dynamic_seed" -objects [get_filesets sim_1]
 
-
 set TESTBENCH_TOP "sim_lib.tb" 
 
 set SNAPSHOT_NAME "snapshot"
@@ -18,11 +17,11 @@ set OUTPUT_DIR "./build"
 
 set UVM_TEST [if {[info exists ::env(UVM_TESTNAME)]} {set ::env(UVM_TESTNAME)} {format "my_first_uvm_test"}]
 
-if {[file exists $OUTPUT_DIR]} {
-    file delete -force $OUTPUT_DIR
-}
-
-file mkdir $OUTPUT_DIR
+#if {[file exists $OUTPUT_DIR]} {
+#    file delete -force $OUTPUT_DIR
+#}
+#
+#file mkdir $OUTPUT_DIR
 
 cd $OUTPUT_DIR
 

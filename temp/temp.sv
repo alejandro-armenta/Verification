@@ -422,3 +422,61 @@ tq = d.find with (item > 3);
   } num_u;
 
   pixel_p_s a;
+import ABC::*;
+
+  bit [7:0] j[4] = {
+    8'h0a, 8'h0b, 8'h0c, 8'h0d
+  };
+
+  bit [7:0] g[4];
+
+  bit [7:0] q, r, s, t;
+
+  int h;
+
+
+  // h = {>>byte{j}};
+
+    // $displayh(h);
+
+    // h = {<<byte{j}};
+
+    // solo flipea los bytes no los bits
+    // $displayh(h);
+
+    // esta es la forma normal packed
+    // el otro es reverse packed
+    // esto es un doble flipped!
+    {<<{g}} = {<<{j}};
+    h = {<<{j}};
+
+    $displayh(j[0], j[1], j[2], j[3]);
+    $displayh(g[0], g[1], g[2], g[3]);
+    $displayh(h);
+
+    {>>{q, r, s, t}} = j;
+
+    $displayh(q, r, s, t);
+
+    h = {>>{q, r, s, t}};
+
+    $displayh(h);
+bit [15:0] wq[$] = {
+    16'h1234, 16'h5678
+  };
+
+  bit [7:0] bq[$];
+ bq = {>>{wq}};
+
+    // wq[0] -> bq[0] bq[1]
+
+    // wq[1] -> bq[2] bq[3]
+
+    $displayh("%h %h %h %h", bq[0],
+              bq[1], bq[2], bq[3]);
+
+    bq = {8'h98, 8'h76, 8'h54, 8'h32};
+
+    wq = {>>{bq}};
+
+    $displayh(wq[0],, wq[1]);

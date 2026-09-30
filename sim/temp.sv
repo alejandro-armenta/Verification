@@ -1,25 +1,50 @@
 
 module tb;
 
-  import ABC::*;
+  typedef struct {
+    int      a;
+    byte     b;
+    shortint c;
+    int      d;
 
-  bit [7:0] j[4] = {
-    8'h0a, 8'h0b, 8'h0c, 8'h0d
+  } my_struct_s;
+
+  my_struct_s st = {
+    32'haaaa_aaaa,
+    8'hbb,
+    16'hcccc,
+    32'hdddd_dddd
   };
 
-  int h;
+  byte b[];
 
   initial begin
 
-    h = {>>byte{j}};
+    b = {>>{st}};
 
-    $displayh(h);
+    foreach (b[i]) begin
+      $writeh(b[i]);
+    end
 
-    h = {<<byte{j}};
+    $display();
 
-    // solo flipea los bytes no los bits
-    $displayh(h);
+    b = {
+      8'h11,
+      8'h22,
+      8'h33,
+      8'h44,
+      8'h55,
+      8'h66,
+      8'h77,
+      8'h88,
+      8'h99,
+      8'hAA,
+      8'hBB
+    };
 
+    st = {>>{b}};
+
+    $displayh(st.a, st.b, st.c, st.d);
 
   end
 
