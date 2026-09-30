@@ -1,26 +1,18 @@
-module arbiter (
-    input logic [1:0] request,
-    input logic clk,
-    input logic reset,
-    output logic [1:0] grant
+module arb_with_ifc (
+    arb_if arbif
 );
 
-  // asynchronous reset
-  always_ff @(posedge clk or posedge reset) begin
+  always_ff @(posedge arbif.clk or posedge arbif.reset) begin
 
-    if (reset) grant <= 2'b00;
-
-    else begin
-      case (request)
-        2'b01:   grant <= 2'b01;
-        2'b10:   grant <= 2'b10;
-        2'b11:   grant <= 2'b01;
-        default: grant <= 2'b00;
-      endcase
-    end
+    if (arbif.reset)
+      arbif.grant <= 2'b00;
+    else if (arbif.request[0])
+      arbif.grant <= 2'b01;
+    else if (arbif.request[1])
+      arbif.grant <= 2'b10;
+    else arbif.grant <= 2'b00;
 
   end
-
 
 
 endmodule

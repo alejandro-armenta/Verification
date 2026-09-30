@@ -9,7 +9,7 @@ puts "Selected random simulation seed: $dynamic_seed"
 # 2. Assign the dynamic seed to the file-set property (for GUI/Vivado runs)
 set_property -name {xsim.simulate.xsim.more_options} -value "-sv_seed $dynamic_seed" -objects [get_filesets sim_1]
 
-set TESTBENCH_TOP "design_lib.arbiter" 
+set TESTBENCH_TOP "sim_lib.top" 
 
 set SNAPSHOT_NAME "snapshot"
 
@@ -17,11 +17,11 @@ set OUTPUT_DIR "./build"
 
 set UVM_TEST [if {[info exists ::env(UVM_TESTNAME)]} {set ::env(UVM_TESTNAME)} {format "my_first_uvm_test"}]
 
-#if {[file exists $OUTPUT_DIR]} {
-#    file delete -force $OUTPUT_DIR
-#}
-#
-#file mkdir $OUTPUT_DIR
+if {[file exists $OUTPUT_DIR]} {
+    file delete -force $OUTPUT_DIR
+}
+
+file mkdir $OUTPUT_DIR
 
 cd $OUTPUT_DIR
 
@@ -63,7 +63,9 @@ compile_library "sim_lib" $sim_files
 
 
 puts "Elaborating design top: $TESTBENCH_TOP into snapshot: $SNAPSHOT_NAME"
-set elab_output [exec xelab -debug typical -L uvm -L design_lib -L sim_lib -top $TESTBENCH_TOP -snapshot $SNAPSHOT_NAME]  
+# set elab_output [exec xelab -debug typical -L uvm -L design_lib -L sim_lib -top $TESTBENCH_TOP -snapshot $SNAPSHOT_NAME]  
+# Inside your existing Tcl script, modify the xelab line to look like this:
+set elab_output [exec xelab -debug all -L uvm -L design_lib -L sim_lib -top $TESTBENCH_TOP -snapshot $SNAPSHOT_NAME]  
 
 set output_lines [split $elab_output "\n"]  
 
@@ -76,7 +78,6 @@ foreach line $output_lines {
 
 if {$local_fail} { error "ERROR: xelab finished with errors or strict warnings." }
 
-
-# puts "Launching Vivado Simulator..."
-# set ale [exec xsim $SNAPSHOT_NAME -sv_seed $dynamic_seed --runall -testplusarg UVM_TESTNAME=$UVM_TEST]
-# puts $ale
+puts "Launching Vivado Simulator in GUI mode..."
+# Removes the background 'exec' capture so the window opens interactively
+exec xsim $SNAPSHOT_NAME -gui -sv_seed $dynamic_seed -testplusarg UVM_TESTNAME=$UVM_TEST
