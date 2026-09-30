@@ -480,3 +480,35 @@ bit [15:0] wq[$] = {
     wq = {>>{bq}};
 
     $displayh(wq[0],, wq[1]);
+
+    typedef enum {
+    init,
+    decode = 2,
+    idle
+  } fsmstate_e;
+
+  fsmstate_e pstate;
+
+  pstate = pstate.first;
+
+    do begin
+      $display(pstate,, pstate.name());
+      pstate = pstate.next;
+    end while (pstate != pstate.first);
+    graduation_year = 1953;
+
+    case (graduation_year) inside
+      [1950 : 1959]: $display("ALE");
+      [1960 : 1969]: $display("ANA");
+      [1970 : 1979]: $display("JORGE");
+    endcase
+
+
+
+
+task mytask(output logic [31:0] x,
+            input logic y);
+
+
+
+endtask

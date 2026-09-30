@@ -9,7 +9,7 @@ puts "Selected random simulation seed: $dynamic_seed"
 # 2. Assign the dynamic seed to the file-set property (for GUI/Vivado runs)
 set_property -name {xsim.simulate.xsim.more_options} -value "-sv_seed $dynamic_seed" -objects [get_filesets sim_1]
 
-set TESTBENCH_TOP "sim_lib.tb" 
+set TESTBENCH_TOP "design_lib.arbiter" 
 
 set SNAPSHOT_NAME "snapshot"
 
@@ -77,6 +77,6 @@ foreach line $output_lines {
 if {$local_fail} { error "ERROR: xelab finished with errors or strict warnings." }
 
 
-puts "Launching Vivado Simulator..."
-set ale [exec xsim $SNAPSHOT_NAME -sv_seed $dynamic_seed --runall -testplusarg UVM_TESTNAME=$UVM_TEST]
-puts $ale
+# puts "Launching Vivado Simulator..."
+# set ale [exec xsim $SNAPSHOT_NAME -sv_seed $dynamic_seed --runall -testplusarg UVM_TESTNAME=$UVM_TEST]
+# puts $ale
