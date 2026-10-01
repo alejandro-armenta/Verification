@@ -10,7 +10,7 @@ module top;
 
   test_with_cb t1 (arbif.TEST);
 
-  monitor mon (arbif.MONITOR);
+  // monitor mon (arbif.MONITOR);
 
 endmodule
 
