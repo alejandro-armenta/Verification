@@ -8,7 +8,9 @@ module top;
 
   arb_with_mp a1 (arbif.DUT);
 
-  test_with_mp t1 (arbif.TEST);
+  test_with_cb t1 (arbif.TEST);
+
+  monitor mon (arbif.MONITOR);
 
 endmodule
 

@@ -7,9 +7,17 @@ interface arb_if (
   logic [1:0] grant, request;
 
 
-  modport TEST(
-      output request, reset,
-      input clk, grant
+  clocking cb @(posedge clk);
+
+    output request;
+
+    input grant;
+
+  endclocking
+
+  // these are synchronous
+  modport TEST(clocking cb,
+      output reset
   );
 
   modport DUT(
