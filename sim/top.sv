@@ -6,9 +6,9 @@ module top;
 
   arb_if arbif (clk);
 
-  arb_with_ifc a1 (arbif);
+  arb_with_mp a1 (arbif.DUT);
 
-  test_with_ifc t1 (arbif);
+  test_with_mp t1 (arbif.TEST);
 
 endmodule
 

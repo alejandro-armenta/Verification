@@ -1,5 +1,5 @@
-module test_with_ifc (
-    arb_if arbif
+module test_with_mp (
+    arb_if.TEST arbif
 );
 
   initial begin

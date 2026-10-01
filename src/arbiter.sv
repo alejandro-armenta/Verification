@@ -1,5 +1,5 @@
-module arb_with_ifc (
-    arb_if arbif
+module arb_with_mp (
+    arb_if.DUT arbif
 );
 
   always_ff @(posedge arbif.clk or posedge arbif.reset) begin
