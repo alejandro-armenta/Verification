@@ -1,3 +1,17 @@
+
+
+module arb (
+    arb_if.DUT arbif
+);
+
+  initial
+    $monitor(
+        "%t %h", $time, arbif.request
+    );
+
+endmodule
+
+
 module arb_with_mp (
     arb_if.DUT arbif
 );

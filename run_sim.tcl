@@ -78,6 +78,16 @@ foreach line $output_lines {
 
 if {$local_fail} { error "ERROR: xelab finished with errors or strict warnings." }
 
-puts "Launching Vivado Simulator in GUI mode..."
-# Removes the background 'exec' capture so the window opens interactively
-exec xsim $SNAPSHOT_NAME -gui -sv_seed $dynamic_seed -testplusarg UVM_TESTNAME=$UVM_TEST
+puts "Launching Vivado Simulator in batch mode..."
+
+if {[catch { exec xsim $SNAPSHOT_NAME -R -sv_seed $dynamic_seed -testplusarg UVM_TESTNAME=$UVM_TEST } sim_out]} {
+    puts $sim_out
+    error "ERROR: Simulation failed or exited with an error."
+} else {
+    puts $sim_out
+    puts "Simulation completed successfully."
+}
+
+# puts "Launching Vivado Simulator in GUI mode..."
+# # Removes the background 'exec' capture so the window opens interactively
+# exec xsim $SNAPSHOT_NAME -gui -sv_seed $dynamic_seed -testplusarg UVM_TESTNAME=$UVM_TEST
