@@ -1,17 +1,28 @@
+
+`include "../src/transaction.sv"
+`include "../src/driver.sv"
+
 program automatic test ();
 
-  import ABC::*;
+  Transaction tr, tr2;
 
-  // tr is null
-  Transaction tr;
   Driver dr;
 
   initial begin
 
-    tr = new(.d(15));
+    tr  = new(.d(15));
+
+    tr2 = tr;
+
+    tr  = new();
+
     tr.display();
 
+    tr2.display();
 
+    tr = null;
+
+    $display(Transaction::count);
   end
 
 endprogram

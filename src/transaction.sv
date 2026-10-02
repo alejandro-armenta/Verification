@@ -1,24 +1,46 @@
+`include "statistics.sv"
+
 class Transaction;
+
+  static int count = 0;
+
+  int id;
 
   logic [31:0] addr, csm, data[8];
 
-  function new(input logic [31:0] a=3, d=5);
+  Statistics stats;
+
+  function new(input logic [31:0] a = 3, d = 5);
+
+    stats = new();
+
+    id = count++;
 
     addr = a;
-    data = {default:d};
+
+    data = '{default: d};
 
   endfunction
 
-  function void display();
 
-    $display(addr);
-    
-    foreach(data[i])
-    $display(data[i]);
-    
-    $display(csm);
-    
+  task transmit_me();
 
-  endfunction
+    stats.start();
+
+    #100;
+
+    stats.stop();
+
+  endtask
+
+  extern function void display();
 
 endclass
+
+
+function void Transaction::display();
+
+  $display(id);
+
+endfunction
+
