@@ -4,25 +4,24 @@
 
 program automatic test ();
 
-  Transaction tr, tr2;
-
-  Driver dr;
+  T2 a, b;
 
   initial begin
 
-    tr  = new(.d(15));
+    a = new();
 
-    tr2 = tr;
+    a.data[0] = 1;
+    a.data[1] = 5;
 
-    tr  = new();
+    b = a.copy();
 
-    tr.display();
+    b.data[2] = 10;
 
-    tr2.display();
+    foreach (a.data[i]) $display(a.data[i]);
 
-    tr = null;
+    foreach (b.data[i]) $display(b.data[i]);
 
-    $display(Transaction::count);
   end
 
 endprogram
+

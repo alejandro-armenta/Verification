@@ -6,6 +6,12 @@ class Statistics;
 
   static time total_elapsed_time = 0;
 
+  function new();
+
+
+
+  endfunction
+
   function void start();
 
     startT = $time;
@@ -27,3 +33,4 @@ class Statistics;
 
 
 endclass
+
