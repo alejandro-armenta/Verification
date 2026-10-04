@@ -37,11 +37,37 @@ class T3;
 
   function new();
 
-    $display("in %m");
-
     stats = new();
 
     id = count++;
+
+  endfunction
+
+  function T3 copy();
+
+    copy = new();
+
+    copy.addr = addr;
+    copy.csm = csm;
+    copy.data = data;
+
+    copy.stats = stats.copy();
+
+  endfunction
+
+  function void pack(ref byte bytes[$]);
+    bytes = {>>{addr, csm, data}};
+  endfunction
+
+  function void unpack(ref byte bytes[$]);
+    {>>{addr, csm, data}} = bytes;
+  endfunction
+
+  function void display();
+
+    $displayh(addr);
+    $displayh(csm);
+    foreach (data[i]) $displayh(data[i]);
 
   endfunction
 

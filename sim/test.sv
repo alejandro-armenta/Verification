@@ -1,25 +1,28 @@
 
 `include "../src/transaction.sv"
 `include "../src/driver.sv"
+`include "../src/packet.sv"
+
+`define SV_RAND_CHECK(r)\
+  do begin\
+    if (!(r)) begin\
+      $display("%s %d Randomization failed %s", `__FILE__, `__LINE__, `"r`");\
+      $finish();\
+    end\
+  end while(0)
 
 program automatic test ();
 
-  T2 a, b;
+  packet a;
 
   initial begin
 
     a = new();
 
-    a.data[0] = 1;
-    a.data[1] = 5;
-
-    b = a.copy();
-
-    b.data[2] = 10;
-
-    foreach (a.data[i]) $display(a.data[i]);
-
-    foreach (b.data[i]) $display(b.data[i]);
+    repeat (32) begin
+      `SV_RAND_CHECK(a.randomize());
+      $display(a.src,, a.b);
+    end
 
   end
 
