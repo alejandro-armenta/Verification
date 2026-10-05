@@ -1,34 +1,29 @@
 
 module tb;
-  function automatic void init(
-      ref int f[5], input int start);
+  function automatic void init(ref int f[5], input int start);
     foreach (f[i]) f[i] = i + start;
   endfunction
 
   typedef int fixed_array_t[5];
 
-  function automatic fixed_array_t init_(
-      input int start);
+  function automatic fixed_array_t init_(input int start);
 
     fixed_array_t result;
 
-    foreach (result[i])
-    result[i] = i + start;
+    foreach (result[i]) result[i] = i + start;
 
     return result;
   endfunction
 
   typedef int dynamic_array_t[];
 
-  function automatic dynamic_array_t init__(
-      input int start);
+  function automatic dynamic_array_t init__(input int start);
 
     dynamic_array_t result;
 
     result = new[5];
 
-    foreach (result[i])
-    result[i] = i + start;
+    foreach (result[i]) result[i] = i + start;
 
     return result;
 
@@ -47,3 +42,25 @@ module tb;
 endmodule
 
 
+Transaction2 a;
+
+initial begin
+  a = new();
+
+  `SV_RAND_CHECK(
+  a.randomize with {
+  addr >= 50;
+  addr <= 1500;
+  data < 10;
+  });
+
+  $display(a.addr,, a.data);
+
+  `SV_RAND_CHECK(
+  a.randomize with {
+  addr == 2000;
+  data > 10;
+  });
+
+  $display(a.addr,, a.data);
+end

@@ -254,3 +254,52 @@ class Packet2;
   constraint c_long {length inside {[1000 : 1023]};}
 
 endclass
+
+class Transaction;
+
+  typedef enum {
+    BYTE,
+    WORD,
+    LWRD,
+    QWRD
+  } length_e;
+
+  typedef enum {
+    READ,
+    WRITE,
+    RMW,
+    INTR
+  } access_e;
+
+
+  rand length_e length;
+  rand access_e access;
+
+  constraint c {access == RMW -> length == LWRD;}
+
+endclass
+
+
+class Transaction2;
+
+  rand bit [31:0] addr, data;
+
+  constraint c {addr inside {[0 : 100], [1000 : 2000]};}
+
+endclass
+
+
+class bathtub;
+  int value;
+  int seed   = 1;
+  int DEPTH  = 6;
+
+  function void pre_randomize();
+
+    // value = $dist_exponential(seed, DEPTH);
+
+
+
+  endfunction
+
+endclass

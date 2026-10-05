@@ -1,7 +1,7 @@
 
-`include "../src/transaction.sv"
-`include "../src/driver.sv"
-`include "../src/packet.sv"
+// `include "../src/transaction.sv"
+// `include "../src/driver.sv"
+// `include "../src/packet.sv"
 `include "../src/stim.sv"
 
 `define SV_RAND_CHECK(r)\
@@ -13,26 +13,32 @@
   end while(0)
 
 program automatic test ();
-  Packet2 a;
+
+  integer seed = 32'hDEAD_BEEF;
+  integer mean_delay = 50;
 
   initial begin
+    repeat (20) begin
+      int a = $urandom_range(3, 10);
+      $display(a);
+    end
 
-    a = new();
+    repeat (20) begin
+      int unsigned a = $urandom();
+      $display($unsigned(a));
+    end
 
-    a.c_short.constraint_mode(0);
 
-    `SV_RAND_CHECK(a.randomize());
+    repeat (20) begin
+      int a = $random();
+      $display(a);
+    end
 
-    $display(a.length);
 
-    a.constraint_mode(0);
-
-    a.c_short.constraint_mode(1);
-
-    `SV_RAND_CHECK(a.randomize());
-
-    $display(a.length);
-
+    repeat (20) begin
+      int a = $dist_exponential(seed, mean_delay);
+      $display(a);
+    end
   end
 
 endprogram
