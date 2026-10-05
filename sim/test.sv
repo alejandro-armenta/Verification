@@ -13,16 +13,26 @@
   end while(0)
 
 program automatic test ();
-  implication2 a;
+  Packet2 a;
 
   initial begin
 
     a = new();
 
-    repeat (20) begin
-      a.randomize();
-      $display(a.x, " -> ", a.y);
-    end
+    a.c_short.constraint_mode(0);
+
+    `SV_RAND_CHECK(a.randomize());
+
+    $display(a.length);
+
+    a.constraint_mode(0);
+
+    a.c_short.constraint_mode(1);
+
+    `SV_RAND_CHECK(a.randomize());
+
+    $display(a.length);
+
   end
 
 endprogram

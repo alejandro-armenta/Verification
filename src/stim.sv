@@ -197,3 +197,60 @@ class implication2;
 
 endclass
 
+
+
+class SolveXBeforeY;
+
+  rand bit x;
+  rand bit [1:0] y;
+
+  constraint c {
+    (x == 0) -> (y == 0);
+    solve x before y;
+  }
+
+  // x y 
+  // 0 0 1/2
+  // 0 1 0
+  // 0 2 0
+  // 0 3 0
+  // 1 0 1/8
+  // 1 1 1/8
+  // 1 2 1/8
+  // 1 3 1/8
+
+endclass
+
+
+class SolveYBeforeX;
+
+  rand bit x;
+  rand bit [1:0] y;
+
+  constraint c {
+    (x == 0) -> (y == 0);
+    solve y before x;
+  }
+
+  // x y 
+  // 0 0 1/8
+  // 0 1 0
+  // 0 2 0
+  // 0 3 0
+  // 1 0 1/8
+  // 1 1 1/4
+  // 1 2 1/4
+  // 1 3 1/4
+
+endclass
+
+
+class Packet2;
+
+  rand bit [31:0] length;
+
+  constraint c_short {length inside {[1 : 32]};}
+
+  constraint c_long {length inside {[1000 : 1023]};}
+
+endclass
