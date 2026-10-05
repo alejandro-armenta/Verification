@@ -79,6 +79,121 @@ class Ranges;
 
   bit [31:0] low, high;
 
-  constraint c_range {c inside {[low : high]};}
+  constraint c_range {!(c inside {[low : high]});}
 
 endclass
+
+
+class Fib;
+
+  rand bit [7:0] f;
+
+  bit [7:0] vals[] = {1, 2, 3, 5, 8};
+
+  constraint c_fib {(f inside vals);}
+
+
+endclass
+
+class Days;
+
+  typedef enum {
+    SUN,
+    MON,
+    TUE,
+    WED,
+    THU,
+    FRI,
+    SAT
+  } days_e;
+
+  days_e list[$];
+
+  rand days_e choice;
+
+  constraint c {choice inside list;}
+
+
+endclass
+
+
+class randcinside;
+
+  int array[];
+
+  rand bit [15:0] index;
+
+  function new(int a[]);
+    array = a;
+  endfunction
+
+  function int pick();
+
+    return array[index];
+
+  endfunction
+
+  constraint c {index < array.size();}
+
+endclass
+
+class unconstrained;
+
+  rand bit x;
+  rand bit [1:0] y;
+
+  // uniform distribution
+
+endclass
+
+
+class implication;
+
+  rand bit x;
+  rand bit [1:0] y;
+
+  constraint c {(x == 0) -> (y == 0);}
+
+  // if x == 0
+  // y = 0
+  // else
+  // y = 0
+  // y = 1 
+  // y = 2
+  // y = 3
+
+  // if x = 0 y has to be 0 and if x = 1 y can be anything
+
+  // 1/2
+  // 0
+  // 0
+  // 0
+  // 1/8
+  // 1/8
+  // 1/8
+  // 1/8
+endclass
+
+
+
+class implication2;
+
+  rand bit x;
+  rand bit [1:0] y;
+
+  constraint c {
+    y > 0;
+    (x == 0) -> (y == 0);
+  }
+
+  // 0
+  // 0
+  // 0
+  // 0
+  // 0
+  // 1/3
+  // 1/3
+  // 1/3
+
+endclass
+

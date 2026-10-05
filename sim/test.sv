@@ -13,23 +13,16 @@
   end while(0)
 
 program automatic test ();
-
-  Ranges a;
+  implication2 a;
 
   initial begin
 
     a = new();
 
-    a.low = 1;
-    a.high = 10;
-
     repeat (20) begin
-
-      `SV_RAND_CHECK(a.randomize());
-      $display(a.c);
-
+      a.randomize();
+      $display(a.x, " -> ", a.y);
     end
-
   end
 
 endprogram
