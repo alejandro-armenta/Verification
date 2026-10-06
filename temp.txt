@@ -1,0 +1,6 @@
+inter process communication
+
+most block run on their own thread
+
+son processos
+

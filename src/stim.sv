@@ -28,3 +28,42 @@ class readcommands;
   }
 
 endclass
+
+class packet2;
+
+  rand bit [7:0] length, payload[];
+
+  constraint c {
+    length > 0;
+    payload.size() == length;
+  }
+
+  function void display();
+
+    $display(length);
+
+    foreach (payload[i]) $write("%d ", payload[i]);
+
+    $display();
+
+  endfunction
+
+endclass
+
+class Rising;
+
+  bit [7:0] low;
+  rand bit [7:0] high, med;
+
+  constraint c {
+    low < med;
+    med < high;
+  }
+
+endclass
+
+// sytem verilog is an os
+
+// son varios procesos corriendo en paralelo
+
+// ipc

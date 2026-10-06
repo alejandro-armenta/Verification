@@ -5,20 +5,34 @@
 `include "../src/stim.sv"
 
 `define SV_RAND_CHECK(r)\
-  do begin\
-    if (!(r)) begin\
-      // $display("%s : %d Randomization failed %s", `__FILE__, `__LINE__, `"r`");\
-      $finish();\
-    end\
-  end while(0)
+    do begin\
+      if (!(r)) begin\
+        // $display("%s : %d Randomization failed %s", `__FILE__, `__LINE__, `"r`");\
+        $finish();\
+      end\
+    end while(0)
 
 program automatic test ();
 
-  packet a;
 
   initial begin
-    a = new();
-    
+
+    $display("%0t \tstart fork join example", $time);
+
+    #10;
+
+    $display("%0t \tsequential after #10", $time);
+
+    fork
+
+      $display("%0t \tparallel start", $time);
+      #50 $display("%0t \tparallel after 50", $time);
+      #10 $display("%0t \tparallel after 10", $time);
+
+      begin
+
+      end
+    join
   end
 
 endprogram
