@@ -4,3 +4,24 @@ most block run on their own thread
 
 son processos
 
+disable threads
+
+
+inter process communication
+
+
+channel that carries the information
+producer and consumer
+two threads exchanging data 
+
+events 
+
+-> execute event
+
+@ wait for event
+
+pass the event into the constructor
+
+the trigger is missed 
+
+triggered status 

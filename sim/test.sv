@@ -1,79 +1,47 @@
+module automatic test;
 
-// `include "../src/transaction.sv"
-// `include "../src/driver.sv"
-// `include "../src/packet.sv"
-`include "../src/stim.sv"
+  class Generator;
+    event done;
 
-`define SV_RAND_CHECK(r)\
-    do begin\
-      if (!(r)) begin\
-        // $display("%s : %d Randomization failed %s", `__FILE__, `__LINE__, `"r`");\
-        $finish();\
-      end\
-    end while(0)
+    function new(event done);
+      this.done = done;
+    endfunction
 
-program automatic test ();
+    task run();
+      fork
+        begin
+          $display("doing stuff");
+          ->done;
+        end
+      join_none
+    endtask
+
+  endclass
+
+  parameter N_GENERATORS = 100;
+
+  event done[N_GENERATORS];
+  Generator gen[N_GENERATORS];
 
   initial begin
 
-    $display("%0t \tstart fork join example", $time);
+    foreach (gen[i]) begin
+      gen[i] = new(.done(done[i]));
+      gen[i].run();
+    end
 
-    #10;
+    foreach (gen[i]) begin
+      automatic int k = i;
+      fork
+        wait (done[k].triggered);
+      join_none
+    end
 
-    $display("%0t \tsequential after #10", $time);
+    wait fork;
 
-    fork
-
-      $display("%0t \tparallel start", $time);
-
-      #50 $display("%0t \tparallel after 50", $time);
-
-      #10 $display("%0t \tparallel after 10", $time);
-
-      begin
-        #30;
-        $display("%0t \tsequential after #30", $time);
-        #10;
-        $display("%0t \tsequential after #10", $time);
-      end
-    join_none
-
-    $display("%0t \tafter join", $time);
-    #80;
-    $display("%0t \tfinish", $time);
+    $display("finished");
 
   end
 
-
-  // initial begin
-
-  //   $display("%0t \tstart fork join example", $time);
-
-  //   #10;
-
-  //   $display("%0t \tsequential after #10", $time);
-
-  //   fork
-
-  //     $display("%0t \tparallel start", $time);
-
-  //     #50 $display("%0t \tparallel after 50", $time);
-
-  //     #10 $display("%0t \tparallel after 10", $time);
-
-  //     begin
-  //       #30;
-  //       $display("%0t \tsequential after #30", $time);
-  //       #10;
-  //       $display("%0t \tsequential after #10", $time);
-  //     end
-  //   join
-
-  //   $display("%0t \tafter join", $time);
-  //   #80;
-  //   $display("%0t \tfinish", $time);
-
-  // end
-
-endprogram
+endmodule
 

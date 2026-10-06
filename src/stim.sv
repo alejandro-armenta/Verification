@@ -67,3 +67,9 @@ endclass
 // son varios procesos corriendo en paralelo
 
 // ipc
+
+class gen_drive;
+
+
+
+endclass
