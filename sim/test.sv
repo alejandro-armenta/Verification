@@ -14,31 +14,11 @@
 
 program automatic test ();
 
-  integer seed = 32'hDEAD_BEEF;
-  integer mean_delay = 50;
+  packet a;
 
   initial begin
-    repeat (20) begin
-      int a = $urandom_range(3, 10);
-      $display(a);
-    end
-
-    repeat (20) begin
-      int unsigned a = $urandom();
-      $display($unsigned(a));
-    end
-
-
-    repeat (20) begin
-      int a = $random();
-      $display(a);
-    end
-
-
-    repeat (20) begin
-      int a = $dist_exponential(seed, mean_delay);
-      $display(a);
-    end
+    a = new();
+    
   end
 
 endprogram
