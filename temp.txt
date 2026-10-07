@@ -25,3 +25,33 @@ pass the event into the constructor
 the trigger is missed 
 
 triggered status 
+
+mutually exclusive access
+
+
+a thread that requests a key always blocks.
+
+queued in FIFO order.
+
+get()
+
+put()
+
+mailbox
+
+source and sink 
+
+source puts data into the mailboxx and sink gets values from the mailbox 
+
+that thread is blocked if try to put
+
+that thread is blocked if try to get 
+
+transactor and a mailbox
+
+peek 
+
+get
+
+put 
+

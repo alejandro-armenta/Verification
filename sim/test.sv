@@ -1,45 +1,71 @@
+
 module automatic test;
 
-  class Generator;
-    event done;
+  class Transaction;
+    rand bit [7:0] a;
+  endclass
 
-    function new(event done);
-      this.done = done;
+  typedef mailbox#(Transaction) mbx_tran;
+
+  class Generator;
+    Transaction tr;
+    mbx_tran mbx;
+
+    function new(mbx_tran mbx);
+      this.mbx = mbx;
     endfunction
 
-    task run();
-      fork
-        begin
-          $display("doing stuff");
-          ->done;
-        end
-      join_none
+    task run(int count);
+      repeat (count) begin
+        tr = new();
+        tr.randomize();
+        mbx.put(tr);
+        $display("put %d", tr.a);
+      end
+    endtask
+  endclass
+
+
+  class Driver;
+
+    Transaction tr;
+    mbx_tran mbx;
+
+    function new(mbx_tran mbx);
+      this.mbx = mbx;
+    endfunction
+
+    task run(int count);
+      repeat (count) begin
+        mbx.get(tr);
+        $display("get %d", tr.a);
+      end
     endtask
 
   endclass
 
-  parameter N_GENERATORS = 100;
+  int count;
 
-  event done[N_GENERATORS];
-  Generator gen[N_GENERATORS];
+  mbx_tran mbx;
+
+  Generator gen;
+
+  Driver drv;
+
 
   initial begin
 
-    foreach (gen[i]) begin
-      gen[i] = new(.done(done[i]));
-      gen[i].run();
-    end
+    mbx   = new(10);
 
-    foreach (gen[i]) begin
-      automatic int k = i;
-      fork
-        wait (done[k].triggered);
-      join_none
-    end
+    gen   = new(mbx);
+    drv   = new(mbx);
 
-    wait fork;
+    count = $urandom_range(50);
 
-    $display("finished");
+    fork
+      gen.run(count);
+      drv.run(count);
+    join
 
   end
 

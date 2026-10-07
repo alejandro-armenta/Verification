@@ -504,3 +504,128 @@ for (int j = 0; j < 3; j++) begin
 
   endtask
 
+module automatic test;
+
+  class Generator;
+    event done;
+
+    function new(event done);
+      this.done = done;
+    endfunction
+
+    task run();
+      fork
+        begin
+          $display("doing stuff");
+          ->done;
+        end
+      join_none
+    endtask
+
+  endclass
+
+  parameter N_GENERATORS = 100;
+
+  event done[N_GENERATORS];
+  Generator gen[N_GENERATORS];
+
+  int done_count = 0;
+
+  initial begin
+
+    foreach (gen[i]) begin
+      gen[i] = new(.done(done[i]));
+      gen[i].run();
+    end
+
+    foreach (gen[i]) begin
+      automatic int k = i;
+      fork
+        begin
+          wait (done[k].triggered);
+          done_count++;
+        end
+      join_none
+    end
+
+    wait (done_count == N_GENERATORS);
+
+    $display(done_count);
+
+  end
+
+endmodule
+
+module automatic test;
+
+  class Generator;
+    static int thread_count = 0;
+
+    task run();
+      thread_count++;
+
+      fork
+        begin
+          $display("doing stuff");
+          thread_count--;
+        end
+      join_none
+    endtask
+
+  endclass
+
+  parameter N_GENERATORS = 100;
+  Generator gen[N_GENERATORS];
+
+  initial begin
+
+    foreach (gen[i]) begin
+      gen[i] = new();
+    end
+
+    foreach (gen[i]) begin
+      gen[i].run();
+    end
+
+    wait (Generator::thread_count == 0);
+
+    $display("finished");
+
+  end
+
+endmodule
+
+module automatic test;
+
+  // this is a mutex
+  semaphore bus_key;
+
+  initial begin
+
+    bus_key = new(1);
+
+    fork
+      access_bus("A", 10);
+      access_bus("B", 20);
+    join
+
+  end
+
+  task access_bus(string process_name, int hold_time);
+
+    $display("%0t \tWaiting for the bus key %s", $time, process_name);
+
+    bus_key.get(1);
+
+    $display("%0t \tACQUIRED key %s", $time, process_name);
+
+    #(hold_time);
+
+    $display("%0t \tRELEASED Key %s", $time, process_name);
+
+    bus_key.put(1);
+
+  endtask
+
+endmodule
+
