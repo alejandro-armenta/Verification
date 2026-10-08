@@ -9,6 +9,15 @@ class Transaction;
 
   endfunction
 
+  virtual function Transaction copy();
+    copy = new();
+    copy.csm = this.csm;
+    copy.src = this.src;
+    copy.dst = this.dst;
+    copy.data = this.data;
+    return copy;
+  endfunction
+
   virtual function void display();
     $display("%0d %0d %0b %p", src, dst, csm, data);
   endfunction
@@ -22,6 +31,13 @@ class BadTransaction extends Transaction;
   virtual function void calc_csm();
     super.calc_csm();
     if (bad_csm) csm = ~csm;
+  endfunction
+
+  virtual function Transaction copy();
+    // copy = new();
+    // copy = super.copy();
+    // copy.bad_csm = this.bad_csm;
+    // return copy;
   endfunction
 
   virtual function void display();
@@ -81,19 +97,19 @@ endclass
 class Generator;
 
   mailbox #(Transaction) gen2drv;
-  Transaction tr;
+  Transaction blueprint;
 
   function new(mailbox#(Transaction) gen2drv);
     this.gen2drv = gen2drv;
+    blueprint = new();
   endfunction
 
   virtual task run(int num_tr = 10);
 
     repeat (num_tr) begin
-      tr = new();
-      tr.randomize();
-      tr.display();
-      gen2drv.put(tr);
+      blueprint.randomize();
+      blueprint.display();
+      gen2drv.put(blueprint.copy());
     end
 
   endtask
@@ -101,3 +117,30 @@ class Generator;
 
 endclass
 
+class Envrionment;
+
+  Generator gen;
+  Driver drv;
+  mailbox #(Transaction) gen2drv;
+
+  virtual function void build();
+    this.gen2drv = new();
+    this.gen = new(this.gen2drv);
+    this.drv = new(this.gen2drv);
+
+  endfunction
+
+  virtual task run();
+
+    fork
+      gen.run();
+      drv.run();
+    join
+
+  endtask
+
+  virtual task wrap_up();
+    // call scoreboard for report
+  endtask
+
+endclass
