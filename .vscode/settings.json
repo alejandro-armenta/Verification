@@ -1,0 +1,9 @@
+{
+    "verible-formatter.path": "/home/alejandro-armenta/verible-v0.0-4296-g0f262651-linux-static-x86_64/verible-v0.0-4296-g0f262651/bin/verible-verilog-format",
+    "verible-formatter.flagFile": ".verilog_format",
+    "editor.formatOnSave": true,
+    "editor.defaultFormatter": "kukdh1.verible-formatter",
+    "[systemverilog]": {
+        "editor.defaultFormatter": "kukdh1.verible-formatter"
+    }
+}

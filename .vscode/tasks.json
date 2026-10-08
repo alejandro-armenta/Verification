@@ -1,0 +1,56 @@
+{
+    // See https://go.microsoft.com/fwlink/?LinkId=733558
+    // for the documentation about the tasks.json format
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "run verification ale",
+            "type": "shell",
+            "command": "./build.sh",
+            "problemMatcher": 
+            [
+                {
+    "owner": "xvlog-compiler",
+    "fileLocation": ["absolute"],
+    "pattern": {
+      "regexp": "^(ERROR|WARNING):\\s+(\\[.*\\]\\s+.*?)(?:\\s+\\[([^:]+):(\\d+)\\])?$",
+      "severity": 1,
+      "message": 2,
+      "file": 3,
+      "line": 4
+    }
+  }
+            ],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            }
+        },
+        {
+            "label": "format ale",
+            "type": "shell",
+            "command": "./format.sh",
+            "problemMatcher": 
+            [
+                {
+                    "owner": "verible-formatter",
+                    "fileLocation": ["relative", "${workspaceFolder}"],
+                    "source": "verible",
+                    "severity": "error",
+                    "pattern": {
+                        "regexp": "^(?:\\.\\/)?([^:]+):\\s+(?:\\.\\/)?([^:]+):(\\d+):(\\d+)(?:-\\d+)?(?:[:\\s]+)?(.*)$",
+                        "file": 2,
+                        "line": 3,
+                        "column": 4,
+                        "message": 5
+                    }
+                }
+            ],
+            "group": {
+                "kind": "build",
+                "isDefault": false
+            },
+            
+        }
+    ]
+}
