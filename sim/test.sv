@@ -2,16 +2,20 @@
 
 module automatic test;
 
-  Extended a;
+  Generator g;
+  Driver d;
 
-  Base b;
+  mailbox #(Transaction) gen2drv;
 
   initial begin
-    a = new(.val(3));
-    b = new(.val(4));
+    gen2drv = new(10);
+    g = new(gen2drv);
+    d = new(gen2drv);
 
-    $display(b.val);
-    $display(a.val);
+    fork
+      g.run(1);
+      d.run();
+    join
   end
 
 endmodule
