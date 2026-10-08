@@ -32,3 +32,31 @@ class BadTransaction extends Transaction;
 endclass
 
 
+class Base;
+  int val;
+  function new(int val);
+    this.val = val;
+  endfunction
+
+endclass
+
+
+class Extended extends Base;
+
+  function new(int val);
+    super.new(val);
+  endfunction
+
+endclass
+
+class Driver;
+
+  mailbox #(Transaction) gen2drv;
+
+  function new(mailbox#(Transaction) gen2drv);
+
+    this.gen2drv = gen2drv;
+
+  endfunction
+
+endclass

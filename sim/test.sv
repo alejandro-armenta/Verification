@@ -2,14 +2,11 @@
 
 module automatic test;
 
-  BadTransaction a;
-
-  Transaction b;
+  Extended a;
 
   initial begin
-    a = new();
-    a.calc_csm();
-    a.display();
+    a = new(.val(3));
+    $display(a.val);
   end
 
 endmodule

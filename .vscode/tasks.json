@@ -10,16 +10,16 @@
             "problemMatcher": 
             [
                 {
-    "owner": "xvlog-compiler",
-    "fileLocation": ["absolute"],
-    "pattern": {
-      "regexp": "^(ERROR|WARNING):\\s+(\\[.*\\]\\s+.*?)(?:\\s+\\[([^:]+):(\\d+)\\])?$",
-      "severity": 1,
-      "message": 2,
-      "file": 3,
-      "line": 4
-    }
-  }
+                    "owner": "xvlog-compiler",
+                    "fileLocation": ["absolute"],
+                    "pattern": {
+                    "regexp": "^(ERROR|WARNING):\\s+(\\[.*\\]\\s+.*?)(?:\\s+\\[([^:]+):(\\d+)\\])?$",
+                    "severity": 1,
+                    "message": 2,
+                    "file": 3,
+                    "line": 4
+                    }
+                }
             ],
             "group": {
                 "kind": "build",
@@ -45,6 +45,19 @@
                         "message": 5
                     }
                 }
+            ],
+            "group": {
+                "kind": "build",
+                "isDefault": false
+            },
+            
+        },
+        {
+            "label": "debug ale",
+            "type": "shell",
+            "command": "./debug.sh",
+            "problemMatcher": 
+            [   
             ],
             "group": {
                 "kind": "build",
