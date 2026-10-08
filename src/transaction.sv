@@ -33,11 +33,18 @@ class BadTransaction extends Transaction;
     if (bad_csm) csm = ~csm;
   endfunction
 
-  virtual function Transaction copy();
-    // copy = new();
-    // copy = super.copy();
-    // copy.bad_csm = this.bad_csm;
-    // return copy;
+  virtual function BadTransaction copy();
+
+    copy = new();
+
+    copy.csm = this.csm;
+    copy.src = this.src;
+    copy.dst = this.dst;
+    copy.data = this.data;
+    copy.bad_csm = this.bad_csm;
+
+    return copy;
+
   endfunction
 
   virtual function void display();
@@ -86,6 +93,7 @@ class Driver;
       gen2drv.get(tr);
       // here it call BadTransaction::calc_csm
       // polymorphism
+      $write("DRV: ");
       tr.display();
       // tr.calc_csm();
 
@@ -102,18 +110,24 @@ class Generator;
   function new(mailbox#(Transaction) gen2drv);
     this.gen2drv = gen2drv;
     blueprint = new();
+    // empieza a randomizar con el nuevo y este ya no existe
+    // usa ese en todo 
   endfunction
 
   virtual task run(int num_tr = 10);
 
     repeat (num_tr) begin
+
+      // es polimorphica
       blueprint.randomize();
+
+      $write("GEN: ");
       blueprint.display();
       gen2drv.put(blueprint.copy());
+
     end
 
   endtask
-
 
 endclass
 
@@ -121,6 +135,9 @@ class Envrionment;
 
   Generator gen;
   Driver drv;
+
+  // aqui le defines la clase base y utiliza las heredadas
+  // aqui realmente esta pasando bad y estoy usando bad no es 
   mailbox #(Transaction) gen2drv;
 
   virtual function void build();
@@ -129,6 +146,8 @@ class Envrionment;
     this.drv = new(this.gen2drv);
 
   endfunction
+
+  // se lo cambiaste aqui
 
   virtual task run();
 

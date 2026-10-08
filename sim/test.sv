@@ -2,20 +2,19 @@
 
 module automatic test;
 
-  Generator g;
-  Driver d;
-
-  mailbox #(Transaction) gen2drv;
+  Envrionment env;
 
   initial begin
-    gen2drv = new(10);
-    g = new(gen2drv);
-    d = new(gen2drv);
+    env = new();
+    env.build();
 
-    fork
-      g.run(1);
-      d.run();
-    join
+    begin
+      BadTransaction bad = new();
+      env.gen.blueprint = bad;
+    end
+
+    env.run();
+    env.wrap_up();
   end
 
 endmodule
