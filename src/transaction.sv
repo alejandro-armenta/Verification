@@ -70,8 +70,8 @@ class Driver;
       gen2drv.get(tr);
       // here it call BadTransaction::calc_csm
       // polymorphism
-      tr.calc_csm();
       tr.display();
+      // tr.calc_csm();
 
     end
   endtask
