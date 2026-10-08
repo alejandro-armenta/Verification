@@ -29,5 +29,6 @@ class BadTransaction extends Transaction;
     super.display();
   endfunction
 
-
 endclass
+
+

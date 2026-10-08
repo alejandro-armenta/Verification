@@ -4,6 +4,8 @@ module automatic test;
 
   BadTransaction a;
 
+  Transaction b;
+
   initial begin
     a = new();
     a.calc_csm();
