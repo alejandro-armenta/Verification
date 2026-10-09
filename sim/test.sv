@@ -2,31 +2,14 @@
 
 module automatic test;
 
-  // Envrionment env;
-
-  // initial begin
-  //   env = new();
-  //   env.build();
-
-  //   begin
-  //     Nearby nb = new();
-  //     env.gen.blueprint = nb;
-  //   end
-
-  //   env.run();
-  //   env.wrap_up();
-  // end
-
-endmodule
-
-module automatic test_bad;
-
-  // it uses the objects type not the handles type 
-  Transaction a;
-
+  Envrionment env;
+  Transaction ale;
   initial begin
-
-    a = new();
-
+    env = new();
+    ale = new();
+    env.build(ale);
+    env.run();
+    env.wrap_up();
   end
+
 endmodule

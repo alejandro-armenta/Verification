@@ -40,30 +40,31 @@ function bit Transaction::compare(BaseTR to);
 endfunction
 
 function BaseTR Transaction::copy(BaseTR to = null);
+
+  Transaction tr;
+
+  if (to == null) tr = new();
+  else $cast(tr, to);
+
+  tr.src  = this.src;
+  tr.dst  = this.dst;
+  tr.data = this.data;
+  tr.csm  = this.csm;
+
+  return tr;
+
 endfunction
 
 function void Transaction::display();
+  $display("Transaction %0d src=%0h dst=%0x csm=%0x", id, src, dst, csm);
 endfunction
 
 
 // function BaseTR Transaction::copy(BaseTR to = null);
 
-//   Transaction tr;
-
-//   if (to == null) tr = new();
-//   else $cast(tr, to);
-
-//   copy.csm  = this.csm;
-//   copy.src  = this.src;
-//   copy.dst  = this.dst;
-//   copy.data = this.data;
-
-//   return copy;
-
 // endfunction
 
 // virtual function void display();
-//   $display("%0d %0d %0b %p", src, dst, csm, data);
 // endfunction
 
 
@@ -130,9 +131,9 @@ endfunction
 
 class Driver;
 
-  mailbox #(Transaction) gen2drv;
+  mailbox #(BaseTR) gen2drv;
 
-  function new(mailbox#(Transaction) gen2drv);
+  function new(mailbox#(BaseTR) gen2drv);
 
     this.gen2drv = gen2drv;
 
@@ -140,14 +141,12 @@ class Driver;
 
   virtual task run();
 
-    Transaction tr;
+    BaseTR tr;
 
     forever begin
       gen2drv.get(tr);
       $write("DRV: ");
       tr.display();
-      // tr.calc_csm();
-
     end
   endtask
 
@@ -155,14 +154,12 @@ endclass
 
 class Generator;
 
-  mailbox #(Transaction) gen2drv;
-  Transaction blueprint;
+  mailbox #(BaseTR) gen2drv;
+  BaseTR blueprint;
 
-  function new(mailbox#(Transaction) gen2drv);
-    this.gen2drv = gen2drv;
-    blueprint = new();
-    // empieza a randomizar con el nuevo y este ya no existe
-    // usa ese en todo 
+  function new(mailbox#(BaseTR) gen2drv, BaseTR blueprint);
+    this.gen2drv   = gen2drv;
+    this.blueprint = blueprint;
   endfunction
 
   virtual task run(int num_tr = 10);
@@ -187,13 +184,14 @@ class Envrionment;
   Generator gen;
   Driver drv;
 
-  // aqui le defines la clase base y utiliza las heredadas
-  // aqui realmente esta pasando bad y estoy usando bad no es 
-  mailbox #(Transaction) gen2drv;
+  mailbox #(BaseTR) gen2drv;
 
-  virtual function void build();
+  virtual function void build(BaseTR blueprint);
+
     this.gen2drv = new();
-    this.gen = new(this.gen2drv);
+
+    this.gen = new(this.gen2drv, blueprint);
+
     this.drv = new(this.gen2drv);
 
   endfunction
