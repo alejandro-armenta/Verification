@@ -1,3 +1,5 @@
+`include "utils.sv"
+
 class Transaction;
 
   rand bit [31:0] src, dst, data[8];
@@ -21,6 +23,30 @@ class Transaction;
   virtual function void display();
     $display("%0d %0d %0b %p", src, dst, csm, data);
   endfunction
+
+endclass
+
+class Nearby extends Transaction;
+
+  // estas mandando paquetes a direcciones de memoria cercanas 
+
+  constraint c {dst inside {[src - 100 : src + 100]};}
+
+  virtual function Nearby copy();
+
+    copy = new();
+
+    copy.csm = this.csm;
+    copy.src = this.src;
+    copy.dst = this.dst;
+    copy.data = this.data;
+
+    `SV_RAND_CHECK(copy.randomize(null));
+
+    return copy;
+
+  endfunction
+
 
 endclass
 
@@ -119,7 +145,7 @@ class Generator;
     repeat (num_tr) begin
 
       // es polimorphica
-      blueprint.randomize();
+      `SV_RAND_CHECK(blueprint.randomize());
 
       $write("GEN: ");
       blueprint.display();
