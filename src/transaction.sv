@@ -82,30 +82,36 @@ class Nearby extends Transaction;
 
   constraint c {dst inside {[src - 100 : src + 100]};}
 
+  extern function new();
+
+  extern virtual function bit compare(BaseTR to);
+
   extern virtual function BaseTR copy(BaseTR to = null);
+
+  extern virtual function void display();
 
 endclass
 
+function Nearby::new();
+  super.new();
+endfunction
+
+function bit Nearby::compare(BaseTR to);
+  return super.compare(to);
+endfunction
+
 function BaseTR Nearby::copy(BaseTR to = null);
+  Nearby nb;
+  if (to == null) nb = new();
+  else $cast(nb, to);
+  void'(super.copy(nb));
+  return nb;
 
 endfunction
 
-// function BaseTR copy(BaseTR to = null);
-
-//   Nearby nb;
-
-//   if (to == null) nb = new();
-//   else $cast(nb, to);
-
-//   void'(super.copy(nb));
-
-//   `SV_RAND_CHECK(nb.randomize(null));
-
-//   return nb;
-
-// endfunction
-
-
+function void Nearby::display();
+  super.display();
+endfunction
 
 // class BadTransaction extends Transaction;
 

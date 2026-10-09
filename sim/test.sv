@@ -3,11 +3,13 @@
 module automatic test;
 
   Envrionment env;
-  Transaction ale;
+  // Transaction ale;
+  Nearby nb;
   initial begin
     env = new();
-    ale = new();
-    env.build(ale);
+    // ale = new();
+    nb  = new();
+    env.build(nb);
     env.run();
     env.wrap_up();
   end
