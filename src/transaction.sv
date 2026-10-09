@@ -19,98 +19,114 @@ virtual class BaseTR;
 
 endclass
 
-// YOUAREHERE
 class Transaction extends BaseTR;
 
-  rand bit [31:0] src, dst, data[8];
-  bit [31:0] csm;
+  rand bit [31:0] src, dst, data[8], csm;
 
-  virtual function void calc_csm();
+  extern function new();
 
-    csm = src ^ dst ^ data.xor;
+  extern virtual function bit compare(BaseTR to);
 
-  endfunction
+  extern virtual function BaseTR copy(BaseTR to = null);
 
-  virtual function Transaction copy(Transaction to = null);
-
-    if (to == null) copy = new();
-    else copy = to;
-
-    copy.csm  = this.csm;
-    copy.src  = this.src;
-    copy.dst  = this.dst;
-    copy.data = this.data;
-
-    return copy;
-
-  endfunction
-
-  virtual function void display();
-    $display("%0d %0d %0b %p", src, dst, csm, data);
-  endfunction
-
+  extern virtual function void display();
 endclass
 
-class Nearby extends Transaction;
+function Transaction::new();
+  super.new();
+endfunction
 
-  // estas mandando paquetes a direcciones de memoria cercanas 
+function bit Transaction::compare(BaseTR to);
+endfunction
 
-  constraint c {dst inside {[src - 100 : src + 100]};}
+function BaseTR Transaction::copy(BaseTR to = null);
+endfunction
 
-  virtual function Transaction copy(Transaction to = null);
-
-    Nearby nb;
-
-    if (to == null) nb = new();
-    else $cast(nb, to);
-
-    void'(super.copy(nb));
-
-    `SV_RAND_CHECK(nb.randomize(null));
-
-    return nb;
-
-  endfunction
+function void Transaction::display();
+endfunction
 
 
-endclass
+// function BaseTR Transaction::copy(BaseTR to = null);
 
-class BadTransaction extends Transaction;
+//   Transaction tr;
 
-  rand bit bad_csm;
+//   if (to == null) tr = new();
+//   else $cast(tr, to);
 
-  virtual function void calc_csm();
-    super.calc_csm();
-    if (bad_csm) csm = ~csm;
-  endfunction
+//   copy.csm  = this.csm;
+//   copy.src  = this.src;
+//   copy.dst  = this.dst;
+//   copy.data = this.data;
 
-  virtual function Transaction copy(Transaction to = null);
+//   return copy;
 
-    BadTransaction bad;
+// endfunction
 
-    if (to == null) bad = new();
-    // aqui hace un upcast a 
-    else
-      $cast(bad, to);
+// virtual function void display();
+//   $display("%0d %0d %0b %p", src, dst, csm, data);
+// endfunction
 
-    void'(super.copy(bad));
-    // super.copy(bad);
 
-    // aqui es un puntero
-    bad.bad_csm = this.bad_csm;
+// class Nearby extends Transaction;
 
-    return bad;
+//   // estas mandando paquetes a direcciones de memoria cercanas 
 
-  endfunction
+//   constraint c {dst inside {[src - 100 : src + 100]};}
 
-  virtual function void display();
-    $write("%b\n", bad_csm);
-    super.display();
-  endfunction
+//   virtual function Transaction copy(Transaction to = null);
 
-  // a class only can be instantiated if you overcharge pure virtual methods
+//     Nearby nb;
 
-endclass
+//     if (to == null) nb = new();
+//     else $cast(nb, to);
+
+//     void'(super.copy(nb));
+
+//     `SV_RAND_CHECK(nb.randomize(null));
+
+//     return nb;
+
+//   endfunction
+
+
+// endclass
+
+// class BadTransaction extends Transaction;
+
+//   rand bit bad_csm;
+
+//   virtual function void calc_csm();
+//     super.calc_csm();
+//     if (bad_csm) csm = ~csm;
+//   endfunction
+
+//   virtual function Transaction copy(Transaction to = null);
+
+//     BadTransaction bad;
+
+//     if (to == null) bad = new();
+//     // aqui hace un upcast a 
+//     else
+//       $cast(bad, to);
+
+//     void'(super.copy(bad));
+//     // super.copy(bad);
+
+//     // aqui es un puntero
+//     bad.bad_csm = this.bad_csm;
+
+//     return bad;
+
+//   endfunction
+
+//   virtual function void display();
+//     $write("%b\n", bad_csm);
+//     super.display();
+//   endfunction
+
+//   // a class only can be instantiated if you overcharge pure virtual methods
+
+// endclass
 
 class Driver;
 

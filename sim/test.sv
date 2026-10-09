@@ -2,20 +2,20 @@
 
 module automatic test;
 
-  Envrionment env;
+  // Envrionment env;
 
-  initial begin
-    env = new();
-    env.build();
+  // initial begin
+  //   env = new();
+  //   env.build();
 
-    begin
-      Nearby nb = new();
-      env.gen.blueprint = nb;
-    end
+  //   begin
+  //     Nearby nb = new();
+  //     env.gen.blueprint = nb;
+  //   end
 
-    env.run();
-    env.wrap_up();
-  end
+  //   env.run();
+  //   env.wrap_up();
+  // end
 
 endmodule
 
