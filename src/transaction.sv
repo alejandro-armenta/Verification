@@ -38,6 +38,23 @@ endfunction
 
 function bit Transaction::compare(BaseTR to);
 
+  Transaction tr;
+
+  if ($cast(tr, to)) begin
+    $finish;
+  end else begin
+    bit a = (
+    
+    this.src == tr.src && 
+      this.dst == tr.dst && 
+      this.csm == tr.csm && 
+      this.data == tr.data 
+      );
+
+    return a;
+
+  end
+
 endfunction
 
 function BaseTR Transaction::copy(BaseTR to = null);
@@ -61,37 +78,34 @@ function void Transaction::display();
 endfunction
 
 
-// function BaseTR Transaction::copy(BaseTR to = null);
+class Nearby extends Transaction;
+
+  constraint c {dst inside {[src - 100 : src + 100]};}
+
+  extern virtual function BaseTR copy(BaseTR to = null);
+
+endclass
+
+function BaseTR Nearby::copy(BaseTR to = null);
+
+endfunction
+
+// function BaseTR copy(BaseTR to = null);
+
+//   Nearby nb;
+
+//   if (to == null) nb = new();
+//   else $cast(nb, to);
+
+//   void'(super.copy(nb));
+
+//   `SV_RAND_CHECK(nb.randomize(null));
+
+//   return nb;
 
 // endfunction
 
-// virtual function void display();
-// endfunction
 
-
-// class Nearby extends Transaction;
-
-//   // estas mandando paquetes a direcciones de memoria cercanas 
-
-//   constraint c {dst inside {[src - 100 : src + 100]};}
-
-//   virtual function Transaction copy(Transaction to = null);
-
-//     Nearby nb;
-
-//     if (to == null) nb = new();
-//     else $cast(nb, to);
-
-//     void'(super.copy(nb));
-
-//     `SV_RAND_CHECK(nb.randomize(null));
-
-//     return nb;
-
-//   endfunction
-
-
-// endclass
 
 // class BadTransaction extends Transaction;
 
