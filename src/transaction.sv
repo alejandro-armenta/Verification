@@ -37,6 +37,7 @@ function Transaction::new();
 endfunction
 
 function bit Transaction::compare(BaseTR to);
+
 endfunction
 
 function BaseTR Transaction::copy(BaseTR to = null);
@@ -164,14 +165,20 @@ class Generator;
 
   virtual task run(int num_tr = 10);
 
+    BaseTR copy;
+
     repeat (num_tr) begin
 
       // es polimorphica
       `SV_RAND_CHECK(blueprint.randomize());
 
+      copy = blueprint.copy();
+
       $write("GEN: ");
-      blueprint.display();
-      gen2drv.put(blueprint.copy());
+
+      copy.display();
+
+      gen2drv.put(copy);
 
     end
 
