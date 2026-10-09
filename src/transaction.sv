@@ -11,13 +11,18 @@ class Transaction;
 
   endfunction
 
-  virtual function Transaction copy();
-    copy = new();
-    copy.csm = this.csm;
-    copy.src = this.src;
-    copy.dst = this.dst;
+  virtual function Transaction copy(Transaction to = null);
+
+    if (to == null) copy = new();
+    else copy = to;
+
+    copy.csm  = this.csm;
+    copy.src  = this.src;
+    copy.dst  = this.dst;
     copy.data = this.data;
+
     return copy;
+
   endfunction
 
   virtual function void display();
@@ -32,18 +37,18 @@ class Nearby extends Transaction;
 
   constraint c {dst inside {[src - 100 : src + 100]};}
 
-  virtual function Nearby copy();
+  virtual function Transaction copy(Transaction to = null);
 
-    copy = new();
+    Nearby nb;
 
-    copy.csm = this.csm;
-    copy.src = this.src;
-    copy.dst = this.dst;
-    copy.data = this.data;
+    if (to == null) nb = new();
+    else $cast(nb, to);
 
-    `SV_RAND_CHECK(copy.randomize(null));
+    void'(super.copy(nb));
 
-    return copy;
+    `SV_RAND_CHECK(nb.randomize(null));
+
+    return nb;
 
   endfunction
 
@@ -59,40 +64,27 @@ class BadTransaction extends Transaction;
     if (bad_csm) csm = ~csm;
   endfunction
 
-  virtual function BadTransaction copy();
+  virtual function Transaction copy(Transaction to = null);
 
-    copy = new();
+    BadTransaction bad;
 
-    copy.csm = this.csm;
-    copy.src = this.src;
-    copy.dst = this.dst;
-    copy.data = this.data;
-    copy.bad_csm = this.bad_csm;
+    if (to == null) bad = new();
+    // aqui hace un upcast a 
+    else
+      $cast(bad, to);
 
-    return copy;
+    void'(super.copy(bad));
+    // super.copy(bad);
+
+    bad.bad_csm = this.bad_csm;
+
+    return bad;
 
   endfunction
 
   virtual function void display();
     $write("%b\n", bad_csm);
     super.display();
-  endfunction
-
-endclass
-
-class Base;
-  int val;
-  function new(int val);
-    this.val = val;
-  endfunction
-
-endclass
-
-
-class Extended extends Base;
-
-  function new(int val);
-    super.new(val);
   endfunction
 
 endclass
@@ -108,17 +100,11 @@ class Driver;
   endfunction
 
   virtual task run();
-    // this is a pointer polymorphico
+
     Transaction tr;
 
-    // solo esta viendo la parte de transaccion la clase base
     forever begin
-      // aqui van a llegar como badtransactions 
-      // porque son transaccions
-      // you can send badtransactions porque aceptan esa interface
       gen2drv.get(tr);
-      // here it call BadTransaction::calc_csm
-      // polymorphism
       $write("DRV: ");
       tr.display();
       // tr.calc_csm();
