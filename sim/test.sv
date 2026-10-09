@@ -22,6 +22,11 @@ endmodule
 module automatic test_bad;
 
   // it uses the objects type not the handles type 
+  Transaction a;
 
+  initial begin
 
+    a = new();
+
+  end
 endmodule

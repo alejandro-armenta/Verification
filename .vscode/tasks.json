@@ -28,7 +28,11 @@
             "group": {
                 "kind": "build",
                 "isDefault": true
-            },  
+            },
+            "presentation": {
+                "focus": false,
+                "reveal":"always"
+            }  
         },
         {
             "label": "format ale",
@@ -65,7 +69,11 @@
             "group": {
                 "kind": "build",
                 "isDefault": false
-            },   
+            },
+            "presentation": {
+                "focus": false,
+                "reveal":"always"
+            }   
         }
     ]
 }

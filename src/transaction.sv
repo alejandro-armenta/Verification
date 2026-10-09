@@ -1,6 +1,26 @@
 `include "utils.sv"
 
-class Transaction;
+
+// no se puede instanciar
+virtual class BaseTR;
+
+  static int count;
+  int id;
+
+  function new();
+    id = count++;
+  endfunction
+
+  pure virtual function bit compare(BaseTR to);
+
+  pure virtual function BaseTR copy(BaseTR to = null);
+
+  pure virtual function void display();
+
+endclass
+
+// YOUAREHERE
+class Transaction extends BaseTR;
 
   rand bit [31:0] src, dst, data[8];
   bit [31:0] csm;
@@ -76,6 +96,7 @@ class BadTransaction extends Transaction;
     void'(super.copy(bad));
     // super.copy(bad);
 
+    // aqui es un puntero
     bad.bad_csm = this.bad_csm;
 
     return bad;
@@ -86,6 +107,8 @@ class BadTransaction extends Transaction;
     $write("%b\n", bad_csm);
     super.display();
   endfunction
+
+  // a class only can be instantiated if you overcharge pure virtual methods
 
 endclass
 
