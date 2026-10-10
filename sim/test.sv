@@ -1,20 +1,25 @@
-`include "../src/transaction.sv"
+`include "Transaction.sv"
+`include "Environment.sv"
+`include "Driver_Callbacks.sv"
 
 module automatic test;
 
-  Envrionment env;
-  // Transaction ale;
-  Nearby nb;
-  BadTransaction bad;
+  Environment env;
+
+  Transaction tr;
 
   initial begin
     env = new();
-    // ale = new();
-    // nb  = new();
 
-    bad = new();
+    tr  = new();
+    env.build(tr);
 
-    env.build(bad);
+    begin
+
+      Driver_cbs_drop dcd = new();
+      env.drv.cbs.push_back(dcd);
+
+    end
 
     env.run();
 
