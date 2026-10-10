@@ -113,42 +113,61 @@ function void Nearby::display();
   super.display();
 endfunction
 
-// class BadTransaction extends Transaction;
+class BadTransaction extends Transaction;
 
-//   rand bit bad_csm;
+  rand bit bad_csm;
 
-//   virtual function void calc_csm();
-//     super.calc_csm();
-//     if (bad_csm) csm = ~csm;
-//   endfunction
+  extern function new();
 
-//   virtual function Transaction copy(Transaction to = null);
+  extern virtual function bit compare(BaseTR to);
 
-//     BadTransaction bad;
+  extern virtual function BaseTR copy(BaseTR to = null);
 
-//     if (to == null) bad = new();
-//     // aqui hace un upcast a 
-//     else
-//       $cast(bad, to);
+  extern virtual function void display();
 
-//     void'(super.copy(bad));
-//     // super.copy(bad);
+endclass
 
-//     // aqui es un puntero
-//     bad.bad_csm = this.bad_csm;
+function BadTransaction::new();
+  super.new();
+endfunction
 
-//     return bad;
+function bit BadTransaction::compare(BaseTR to);
 
-//   endfunction
+  BadTransaction tr;
 
-//   virtual function void display();
-//     $write("%b\n", bad_csm);
-//     super.display();
-//   endfunction
+  if ($cast(tr, to)) begin
+    $finish;
+  end
 
-//   // a class only can be instantiated if you overcharge pure virtual methods
+  if (!super.compare(tr)) begin
+    $finish;
+  end
 
-// endclass
+  return this.bad_csm == tr.bad_csm;
+
+endfunction
+
+function BaseTR BadTransaction::copy(BaseTR to = null);
+
+  BadTransaction bad;
+
+  if (to == null) bad = new();
+  else $cast(bad, to);
+
+  void'(super.copy(bad));
+
+  bad.bad_csm = this.bad_csm;
+
+  return bad;
+
+endfunction
+
+function void BadTransaction::display();
+
+  $write("%b\n", bad_csm);
+  super.display();
+
+endfunction
 
 class Driver;
 
