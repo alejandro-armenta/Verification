@@ -1,6 +1,6 @@
 `include "utils.sv"
 
-
+// este es para data
 // no se puede instanciar
 virtual class BaseTR;
 
@@ -30,6 +30,7 @@ class Transaction extends BaseTR;
   extern virtual function BaseTR copy(BaseTR to = null);
 
   extern virtual function void display();
+
 endclass
 
 function Transaction::new();
@@ -169,25 +170,65 @@ function void BadTransaction::display();
 
 endfunction
 
+// este es para codigo
+// this doesnt have a pure virtual method, so it can be instanciated
+
+virtual class Driver_cbs;
+
+  virtual task pre_tx(ref BaseTR tr, ref bit drop);
+  endtask
+
+  virtual task post_tx(ref BaseTR tr);
+  endtask
+
+endclass
+
 class Driver;
+
+  Driver_cbs cbs[$];
 
   mailbox #(BaseTR) gen2drv;
 
-  function new(mailbox#(BaseTR) gen2drv);
+  mailbox #(BaseTR) agent2drv;
 
-    this.gen2drv = gen2drv;
+  function new(mailbox#(BaseTR) gen2drv, mailbox#(BaseTR) agent2drv);
+
+    this.gen2drv   = gen2drv;
+    this.agent2drv = agent2drv;
 
   endfunction
 
+  virtual task transmit(BaseTR tr);
+
+  endtask
+
   virtual task run();
+
+    // drops packets if any pre_tx callback sets drop to 1
+    bit drop;
 
     BaseTR tr;
 
     forever begin
-      gen2drv.get(tr);
-      $write("DRV: ");
-      tr.display();
+
+      drop = 0;
+
+      agent2drv.get(tr);
+
+      foreach (cbs[i]) begin
+        cbs[i].pre_tx(tr, drop);
+      end
+
+      if (drop) continue;
+
+      transmit(tr);
+
+      foreach (cbs[i]) begin
+        cbs[i].post_tx(tr);
+      end
+
     end
+
   endtask
 
 endclass
@@ -232,13 +273,17 @@ class Envrionment;
 
   mailbox #(BaseTR) gen2drv;
 
+  mailbox #(BaseTR) agent2drv;
+
   virtual function void build(BaseTR blueprint);
 
     this.gen2drv = new();
 
+    this.agent2drv = new();
+
     this.gen = new(this.gen2drv, blueprint);
 
-    this.drv = new(this.gen2drv);
+    this.drv = new(this.gen2drv, agent2drv);
 
   endfunction
 
