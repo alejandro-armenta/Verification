@@ -17,6 +17,8 @@ package tinyalu_pkg;
 
   `include "tinyalu_agent_config.svh"
 
+  `include "sequence_item.svh"
+
   `include "command_transaction.svh"
 
   `include "add_transaction.svh"

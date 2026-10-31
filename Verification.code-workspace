@@ -4,7 +4,7 @@
 			"path": "."
 		},
 		{
-			"path": "../uvmprimer/22_UVM_Agents"
+			"path": "../uvmprimer/23_UVM_Sequences"
 		}
 	],
 	"settings": {
@@ -15,5 +15,7 @@
 		"terminal.integrated.fontSize": 13,
 		"files.autoSave": "afterDelay",
 		"terminal.integrated.scrollback": 5000,
+		"editor.wordWrap": "on",
+		"editor.wordWrapIndicator": true,
 	}
 }
